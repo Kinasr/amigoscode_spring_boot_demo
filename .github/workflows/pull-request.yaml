@@ -1,0 +1,29 @@
+name: PullRequest
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: pass
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: SetupJDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+      - name: Maven Build
+        run: mvnclean package -Dmaven.test.skip=true
+      - name: Integration test
+        run: mvn verify -Pintegration-tests -Dsecrets-POSTGRES_USERNAME=postgres -Dsecrets-POSTGRES_PASSWORD=pass

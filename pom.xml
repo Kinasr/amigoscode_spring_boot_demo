@@ -14,7 +14,7 @@
 	<name>amigoscode_spring_boot_demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>15</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,6 +41,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -57,7 +63,53 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>${unit.tests.skip}</skipTests>
+					<excludes>
+						<exclude>**/*ITest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<skipTests>${integration.tests.skip}</skipTests>
+							<includes>
+								<include>**/*ITest.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>unit-tests</id>
+			<properties>
+				<unit.tests.skip>false</unit.tests.skip>
+				<integration.tests.skip>true</integration.tests.skip>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>integration-tests</id>
+			<properties>
+				<unit.tests.skip>true</unit.tests.skip>
+				<integration.tests.skip>false</integration.tests.skip>
+			</properties>
+		</profile>
+	</profiles>
 </project>

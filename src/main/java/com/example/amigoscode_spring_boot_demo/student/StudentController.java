@@ -1,6 +1,8 @@
 package com.example.amigoscode_spring_boot_demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public void registerNewStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    public ResponseEntity<?> registerNewStudent(@RequestBody Student student) {
+        return new ResponseEntity<>(studentService.addNewStudent(student), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{studentId}")
