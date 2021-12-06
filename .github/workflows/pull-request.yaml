@@ -24,6 +24,6 @@ jobs:
         with:
           java-version: 15
       - name: Maven Build
-        run: mvnclean package -Dmaven.test.skip=true
+        run: mvn clean package -Dmaven.test.skip=true
       - name: Integration test
         run: mvn verify -Pintegration-tests -Dsecrets-POSTGRES_USERNAME=postgres -Dsecrets-POSTGRES_PASSWORD=pass
