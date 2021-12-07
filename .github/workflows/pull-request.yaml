@@ -8,6 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_USERNAME }}
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -18,5 +26,4 @@ jobs:
       - name: Maven Build
         run: mvn clean package -D maven.test.skip=true
       - name: Execute unit tests
-        run: mvn verify -P unit-tests -D H2_USERNAME=${{ secrets.H2_USERNAME }}
-          -D H2_PASSWORD=${{ secrets.H2_PASSWORD }}
+        run: mvn test -P unit-tests -D H2_USERNAME=${{ secrets.H2_USERNAME }} -D H2_PASSWORD=${{ secrets.H2_PASSWORD }}
