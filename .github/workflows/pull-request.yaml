@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container: maven:latest
+    container: node:latest
 
     services:
       postgres:
@@ -27,8 +27,8 @@ jobs:
           java-version: 17
       - name: Setup Postgres
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends postgresql-client
+          apt-get update
+          apt-get install --yes --no-install-recommends postgresql-client
       - name: Create student database
         run: psql -h postgres -U ${{ secrets.POSTGRES_USERNAME }} -c 'CREATE DATABASE "student";'
       - name: Maven Build
