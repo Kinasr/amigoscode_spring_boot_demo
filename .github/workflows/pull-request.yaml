@@ -8,19 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container: node:latest
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_DB: student
-          POSTGRES_PASSWORD: StrongPass
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,14 +15,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Setup Postgres
-        run: |
-          apt-get update
-          apt-get install --yes --no-install-recommends postgresql-client
-      - name: Create student database
-        run: psql -h postgres -d student -U postgres -c 'SELECT 1;'
       - name: Maven Build
         run: mvn clean package -D maven.test.skip=true
       - name: Execute unit tests
-        run: mvn verify -P unit-tests -D POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
-          -D POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+        run: mvn verify -P unit-tests -D H2_USERNAME=${{ secrets.H2_USERNAME }}
+          -D H2_PASSWORD=${{ secrets.H2_PASSWORD }}
