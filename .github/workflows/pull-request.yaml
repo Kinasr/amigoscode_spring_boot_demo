@@ -1,0 +1,32 @@
+name: PullRequest
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: SetupJDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Create student database
+        run: psql -h postgres -U ${{ secrets.POSTGRES_USERNAME }} -c 'CREATE DATABASE "student";'
+      - name: Maven Build
+        run: mvn clean package -D maven.test.skip=true
+      - name: Execute unit tests
+        run: mvn verify -P unit-tests -D POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
+          -D POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
