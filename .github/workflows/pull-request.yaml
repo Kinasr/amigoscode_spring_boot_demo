@@ -14,7 +14,10 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_DB: student
           POSTGRES_PASSWORD: StrongPass
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
         ports:
           - 5432:5432
 
@@ -30,7 +33,7 @@ jobs:
           apt-get update
           apt-get install --yes --no-install-recommends postgresql-client
       - name: Create student database
-        run: psql -h postgres -U postgres -c 'CREATE DATABASE "student";'
+        run: psql -h postgres -d student -U postgres -c 'SELECT 1;'
       - name: Maven Build
         run: mvn clean package -D maven.test.skip=true
       - name: Execute unit tests
