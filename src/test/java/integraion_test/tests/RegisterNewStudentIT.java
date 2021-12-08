@@ -36,7 +36,7 @@ public class RegisterNewStudentIT {
 
         // when
         var response = send(name, email, dateOfBirth)
-                .assertStatusCode(OK)
+                .assertStatusCode(CREATED)
                 .extractResponse();
 
         // then

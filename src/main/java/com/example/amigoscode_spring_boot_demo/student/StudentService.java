@@ -90,7 +90,7 @@ public class StudentService {
 
         if (oStudent.isPresent() && response.getData() == null) {
             var savedStudent = studentRepository.save(student);
-            response.setData(Map.of("data", savedStudent)).setStatus(OK);
+            response.setData(Map.of("data", savedStudent)).setStatus(CREATED);
         }
 
         return new ResponseEntity<>(
