@@ -23,7 +23,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public ResponseEntity<?> getStudents() {
+    public ResponseEntity<Map<String, Object>> getStudents() {
         var students = studentRepository.findAll();
         return students.isEmpty() ?
                 new ResponseEntity<>(Map.of("data", ""), NO_CONTENT) :

@@ -25,5 +25,5 @@ jobs:
           java-version: 17
       - name: Maven Build
         run: mvn clean package -D maven.test.skip=true
-      - name: Execute unit tests
-        run: mvn test -P unit-tests -D H2_USERNAME=${{ secrets.H2_USERNAME }} -D H2_PASSWORD=${{ secrets.H2_PASSWORD }}
+      - name: Execute Integration tests
+        run: mvn verify -P integration-tests -D POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} -D POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}

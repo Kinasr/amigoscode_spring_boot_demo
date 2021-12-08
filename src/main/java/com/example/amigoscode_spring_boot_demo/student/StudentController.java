@@ -5,8 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "api/v1/student")
 public class StudentController {
@@ -23,7 +21,7 @@ public class StudentController {
      */
     @GetMapping
     public ResponseEntity<?> getStudents() {
-        return new ResponseEntity<>(studentService.getStudents(), HttpStatus.OK);
+        return studentService.getStudents();
     }
 
     /**
