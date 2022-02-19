@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 
 @Entity
 @Table
@@ -46,13 +47,19 @@ class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Student(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
     public int getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public Optional<String> name() {
+        return Optional.ofNullable(this.name);
+    }
+
+    public Optional<String> email() {
+        return Optional.ofNullable(this.email);
+    }
+
+    public Optional<LocalDate> dateOfBirth() {
+        return Optional.ofNullable(dateOfBirth);
     }
 }
